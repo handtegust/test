@@ -1407,7 +1407,7 @@ const App = () => {
         const handleProfileSave = useCallback(async ({ name, handle, profileImageUrl, passwordHash }) => {
             if (!db || !currentUserId) return;
             try {
-                const profileDocRef = doc(db, `/artifacts/${canvasAppId}/public/data/userProfiles`, currentUserId);
+                const profileDocRef = doc(db, `artifacts/${canvasAppId}/public/data/userProfiles`, currentUserId);
                 await setDoc(profileDocRef, { 
                     name, 
                     handle, 
@@ -1463,7 +1463,7 @@ const App = () => {
         const handleSaveGroupName = useCallback(async (groupId) => {
             if (!db || !groupId || editingGroupName.trim() === '') return;
             try {
-                const groupDocRef = doc(db, `/artifacts/${canvasAppId}/public/data/customGroups`, groupId);
+                const groupDocRef = doc(db, `artifacts/${canvasAppId}/public/data/customGroups`, groupId);
                 await setDoc(groupDocRef, { name: editingGroupName.trim() }, { merge: true });
                 setEditingGroupId(null);
                 setEditingGroupName('');
@@ -1551,7 +1551,7 @@ const App = () => {
                 return;
             }
 
-            const profileDocRef = doc(db, `/artifacts/${canvasAppId}/public/data/userProfiles`, currentUserId);
+            const profileDocRef = doc(db, `artifacts/${canvasAppId}/public/data/userProfiles`, currentUserId);
             const unsubscribe = onSnapshot(profileDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     setCurrentCustomProfile(docSnap.data());
@@ -1567,7 +1567,7 @@ const App = () => {
 
         useEffect(() => {
             if (!db || isLoading) return;
-            const profilesColRef = collection(db, `/artifacts/${canvasAppId}/public/data/userProfiles`);
+            const profilesColRef = collection(db, `artifacts/${canvasAppId}/public/data/userProfiles`);
             const unsubscribe = onSnapshot(profilesColRef, (snapshot) => {
                 const fetchedProfiles = {};
                 snapshot.docs.forEach(doc => {
@@ -1582,7 +1582,7 @@ const App = () => {
 
         useEffect(() => {
             if (!db || isLoading) return;
-            const groupsColRef = collection(db, `/artifacts/${canvasAppId}/public/data/customGroups`);
+            const groupsColRef = collection(db, `artifacts/${canvasAppId}/public/data/customGroups`);
             const unsubscribe = onSnapshot(groupsColRef, (snapshot) => {
                 const fetchedGroups = {};
                 snapshot.docs.forEach(doc => {
@@ -1604,7 +1604,7 @@ const App = () => {
 
         useEffect(() => {
             if (!db || isLoading) return;
-            const postsColRef = collection(db, `/artifacts/${canvasAppId}/public/data/posts`);
+            const postsColRef = collection(db, `artifacts/${canvasAppId}/public/data/posts`);
             const q = query(postsColRef);
             const unsubscribe = onSnapshot(q, (snapshot) => {
                 const fetchedPosts = snapshot.docs.map(doc => ({
@@ -1664,7 +1664,7 @@ const App = () => {
             // 이제 개별 '가지'가 타임라인 순서를 결정하므로, 루트 게시물의 시간을 바꿀 필요가 없습니다.
 
             try {
-                const postsColRef = collection(db, `/artifacts/${canvasAppId}/public/data/posts`);
+                const postsColRef = collection(db, `artifacts/${canvasAppId}/public/data/posts`);
                 const newDocRef = await addDoc(postsColRef, {
                     content: content,
                     authorId: postingProfile.uid,
@@ -1696,7 +1696,7 @@ const App = () => {
             if (!targetOriginalId) {
                  if (isSimpleRetweetPost) {
                     try {
-                        await deleteDoc(doc(db, `/artifacts/${canvasAppId}/public/data/posts`, targetPost.id));
+                        await deleteDoc(doc(db, `artifacts/${canvasAppId}/public/data/posts`, targetPost.id));
                     } catch(e) { /* silent fail */ }
                  }
                  return console.error("액션 대상 원본 게시물을 찾을 수 없습니다.");
@@ -1716,7 +1716,7 @@ const App = () => {
                 
                 if (existingSimpleRT) {
                     try {
-                        const docRef = doc(db, `/artifacts/${canvasAppId}/public/data/posts`, existingSimpleRT.id);
+                        const docRef = doc(db, `artifacts/${canvasAppId}/public/data/posts`, existingSimpleRT.id);
                         await deleteDoc(docRef);
                     } catch (e) {
                         console.error("언리트윗 실패:", e);
@@ -1737,7 +1737,7 @@ const App = () => {
         const toggleReaction = useCallback(async (postId, fieldName) => {
             if (!db || !currentUserId || !getDoc) return;
             try {
-                const docRef = doc(db, `/artifacts/${canvasAppId}/public/data/posts`, postId);
+                const docRef = doc(db, `artifacts/${canvasAppId}/public/data/posts`, postId);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const postData = docSnap.data();
@@ -1773,7 +1773,7 @@ const App = () => {
         const confirmDelete = useCallback(async () => {
             if (!db || !postToDelete) return;
             try {
-                const docRef = doc(db, `/artifacts/${canvasAppId}/public/data/posts`, postToDelete.id);
+                const docRef = doc(db, `artifacts/${canvasAppId}/public/data/posts`, postToDelete.id);
                 await deleteDoc(docRef);
                 if (selectedPostIdForThread === postToDelete.id) {
                     setSelectedPostIdForThread(null);
@@ -1796,7 +1796,7 @@ const App = () => {
         const handleEditPost = useCallback(async (postId, newContent) => {
             if (!db || !currentUserId || newContent.trim() === "") return false;
             try {
-                const docRef = doc(db, `/artifacts/${canvasAppId}/public/data/posts`, postId);
+                const docRef = doc(db, `artifacts/${canvasAppId}/public/data/posts`, postId);
                 await updateDoc(docRef, { 
                     content: newContent,
                     editedAt: serverTimestamp() 
@@ -2392,5 +2392,6 @@ const App = () => {
 
 </body>
 </html>
+
 
 
